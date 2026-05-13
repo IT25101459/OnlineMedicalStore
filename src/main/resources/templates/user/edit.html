@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Profile - MediStore</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div th:replace="~{fragments/sidebar :: sidebar('profile')}"></div>
+<main class="main-content">
+    <div class="page-header">
+        <div><h1>Edit Profile</h1><p>Update your account details</p></div>
+        <a href="/user/profile" class="btn btn-secondary">← Back</a>
+    </div>
+    <div class="card" style="max-width:520px">
+        <form th:action="@{/user/edit}" method="post">
+            <input type="hidden" name="userId" th:value="${user.userId}">
+            <div class="form-group">
+                <label class="form-label">Email</label>
+                <input type="email" name="email" class="form-control" th:value="${user.email}" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Phone</label>
+                <input type="text" name="phone" class="form-control" th:value="${user.phone}" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Address</label>
+                <textarea name="address" class="form-control" rows="3" required th:text="${user.address}"></textarea>
+            </div>
+            <div class="d-flex gap-2 mt-3">
+                <button type="submit" class="btn btn-warning">Save Changes</button>
+                <a href="/user/profile" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</main>
+</body>
+</html>
