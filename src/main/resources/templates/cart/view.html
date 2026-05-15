@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Cart - MediStore</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div th:replace="~{fragments/sidebar :: sidebar('cart')}"></div>
+<main class="main-content">
+    <div class="page-header">
+        <div><h1>🛒 My Cart</h1><p>Review your selected items</p></div>
+        <a href="/" class="btn btn-secondary">← Continue Shopping</a>
+    </div>
+    <div class="card">
+        <table class="data-table">
+            <thead>
+                <tr><th>Medicine</th><th>Unit Price</th><th>Quantity</th><th>Total</th><th>Action</th></tr>
+            </thead>
+            <tbody>
+                <tr th:each="item : ${cartItems}">
+                    <td><strong th:text="${item.medicineName}"></strong></td>
+                    <td th:text="'Rs. ' + item.price"></td>
+                    <td>
+                        <form th:action="@{/cart/update/{id}(id=${item.cartItemId})}" method="post" class="d-flex gap-2 align-center">
+                            <input type="number" name="quantity" th:value="${item.quantity}" min="1"
+                                   style="width:65px;padding:6px 8px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:0.83rem;font-family:'Inter',sans-serif;">
+                            <button type="submit" class="btn btn-secondary btn-sm">Update</button>
+                        </form>
+                    </td>
+                    <td><strong class="text-success" th:text="'Rs. ' + item.total"></strong></td>
+                    <td>
+                        <form th:action="@{/cart/remove/{id}(id=${item.cartItemId})}" method="post">
+                            <button class="btn btn-danger btn-sm">🗑 Remove</button>
+                        </form>
+                    </td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(cartItems)}">
+                    <td colspan="5"><div class="empty-state"><div class="icon">🛒</div><p>Your cart is empty. <a href="/">Browse medicines</a></p></div></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div th:if="${not #lists.isEmpty(cartItems)}"
+             style="display:flex;justify-content:flex-end;align-items:center;gap:20px;margin-top:20px;padding-top:16px;border-top:1px solid #f1f5f9;">
+            <div>
+                <span class="text-muted">Grand Total: </span>
+                <span style="font-size:1.4rem;font-weight:700;color:#10b981;" th:text="'Rs. ' + ${total}"></span>
+            </div>
+            <a href="/order" class="btn btn-success">Proceed to Order →</a>
+        </div>
+    </div>
+</main>
+</body>
+</html>
