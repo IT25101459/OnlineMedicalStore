@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Supplier - MediStore</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div th:replace="~{fragments/sidebar :: sidebar('supplier')}"></div>
+<main class="main-content">
+    <div class="page-header">
+        <div><h1>Edit Supplier</h1><p>Update supplier details</p></div>
+        <a href="/supplier" class="btn btn-secondary">← Back</a>
+    </div>
+    <div class="card" style="max-width:540px">
+        <form th:action="@{/supplier/edit}" method="post">
+            <input type="hidden" name="supplierId" th:value="${supplier.supplierId}">
+            <div class="form-group"><label class="form-label">Full Name</label>
+                <input type="text" name="name" class="form-control" th:value="${supplier.name}" required></div>
+            <div class="form-group"><label class="form-label">Email</label>
+                <input type="email" name="email" class="form-control" th:value="${supplier.email}" required></div>
+            <div class="form-group"><label class="form-label">Contact Number</label>
+                <input type="text" name="phone" class="form-control" th:value="${supplier.phone}" required></div>
+            <div class="form-group"><label class="form-label">Address</label>
+                <textarea name="address" class="form-control" rows="2" required th:text="${supplier.address}"></textarea></div>
+            <div class="d-flex gap-2 mt-3">
+                <button type="submit" class="btn btn-warning">Save Changes</button>
+                <a href="/supplier" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</main>
+</body>
+</html>

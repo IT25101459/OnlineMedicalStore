@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Payments - MediStore</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div th:replace="~{fragments/sidebar :: sidebar('payment')}"></div>
+<main class="main-content">
+    <div class="page-header">
+        <div><h1>Payment Management</h1><p>View and manage your payment records</p></div>
+    </div>
+    <div th:if="${param.success}" class="alert alert-success">✅ Payment recorded successfully!</div>
+    <div class="stat-grid">
+        <div class="stat-card grad-teal"><p>Total Payments</p><h2 th:text="${payments.size()}">0</h2></div>
+    </div>
+    <div class="card">
+        <table class="data-table">
+            <thead>
+                <tr><th>Payment ID</th><th>Order ID</th><th>Amount</th><th>Method</th><th>Status</th><th>Date</th><th>Actions</th></tr>
+            </thead>
+            <tbody>
+                <tr th:each="p : ${payments}">
+                    <td><span class="badge badge-gray" th:text="${p.paymentId}"></span></td>
+                    <td th:text="${p.orderId}"></td>
+                    <td><strong class="text-success" th:text="'Rs. ' + p.amount"></strong></td>
+                    <td><span class="tag" th:text="${p.method}"></span></td>
+                    <td><span class="badge badge-green" th:text="${p.status}"></span></td>
+                    <td th:text="${p.paymentDate}"></td>
+                    <td>
+                        <form th:action="@{/payment/delete/{id}(id=${p.paymentId})}" method="post"
+                              onsubmit="return confirm('Delete this record?')">
+                            <button class="btn btn-danger btn-sm">🗑</button>
+                        </form>
+                    </td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(payments)}">
+                    <td colspan="7"><div class="empty-state"><div class="icon">💳</div><p>No payment records found.</p></div></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+</body>
+</html>
