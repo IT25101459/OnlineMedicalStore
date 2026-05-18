@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard - MediStore</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div th:replace="~{fragments/sidebar :: sidebar('home')}"></div>
+<main class="main-content">
+    <div class="page-header">
+        <div>
+            <h1>Dashboard</h1>
+            <p>Welcome back, <span th:text="${user != null ? user.username : 'Guest'}"></span> 👋</p>
+        </div>
+        <div class="d-flex gap-2">
+            <th:block th:if="${user == null}">
+                <a href="/user/login" class="btn btn-primary">Login</a>
+                <a href="/user/register" class="btn btn-success">Register</a>
+            </th:block>
+        </div>
+    </div>
+
+    <div class="stat-grid">
+        <div class="stat-card grad-pink">
+            <p>Total Medicines</p>
+            <h2 th:text="${medicines.size()}">0</h2>
+        </div>
+        <div class="stat-card grad-purple">
+            <p>Categories</p>
+            <h2 th:text="${categories.size()}">0</h2>
+        </div>
+        <div class="stat-card grad-teal">
+            <p>My Orders</p>
+            <h2 th:text="${myOrders != null ? myOrders.size() : 0}">0</h2>
+        </div>
+        <div class="stat-card grad-orange">
+            <p>In Stock</p>
+            <h2 th:text="${inStockCount}">0</h2>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="d-flex justify-between align-center mb-3">
+            <h3 style="font-size:1.1rem;font-weight:700;">Available Medicines</h3>
+            <a href="/medicine/add" class="btn btn-primary btn-sm">+ Add Medicine</a>
+        </div>
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Name</th><th>Price</th><th>Stock</th><th>Expiry</th><th>Status</th><th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="med : ${medicines}">
+                    <td><strong th:text="${med.name}"></strong></td>
+                    <td th:text="'Rs. ' + ${med.price}"></td>
+                    <td th:text="${med.stock}"></td>
+                    <td th:text="${med.expiryDate}"></td>
+                    <td>
+                        <span th:if="${med.stock > 0}" class="badge badge-green">In Stock</span>
+                        <span th:if="${med.stock == 0}" class="badge badge-red">Out of Stock</span>
+                    </td>
+                    <td>
+                        <form th:action="@{/cart/add}" method="post" class="d-flex gap-2 align-center">
+                            <input type="hidden" name="medicineId" th:value="${med.medicineId}">
+                            <input type="number" name="quantity" value="1" min="1"
+                                   style="width:60px;padding:5px 8px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:0.82rem;">
+                            <button type="submit" class="btn btn-primary btn-sm">🛒 Add</button>
+                        </form>
+                    </td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(medicines)}">
+                    <td colspan="6">
+                        <div class="empty-state">
+                            <div class="icon">💊</div>
+                            <p>No medicines yet. <a href="/medicine/add">Add one</a></p>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+</body>
+</html>

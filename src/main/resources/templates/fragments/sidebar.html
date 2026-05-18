@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<aside th:fragment="sidebar(active)" class="sidebar">
+    <div class="sidebar-brand">
+        <h2>💊 MediStore</h2>
+        <p>Admin Dashboard</p>
+    </div>
+    <nav class="sidebar-nav">
+        <a href="/"             class="nav-item" th:classappend="${active == 'home'}     ? ' active' : ''"><span class="icon">🏠</span> Dashboard</a>
+        <a href="/user/profile" class="nav-item" th:classappend="${active == 'profile'}  ? ' active' : ''"><span class="icon">👤</span> My Profile</a>
+        <a href="/medicine"     class="nav-item" th:classappend="${active == 'medicine'} ? ' active' : ''"><span class="icon">💊</span> Medicines</a>
+        <a href="/category"     class="nav-item" th:classappend="${active == 'category'} ? ' active' : ''"><span class="icon">🗂️</span> Categories</a>
+        <a href="/supplier"     class="nav-item" th:classappend="${active == 'supplier'} ? ' active' : ''"><span class="icon">🏭</span> Suppliers</a>
+        <a href="/cart"         class="nav-item" th:classappend="${active == 'cart'}     ? ' active' : ''"><span class="icon">🛒</span> Cart</a>
+        <a href="/order"        class="nav-item" th:classappend="${active == 'order'}    ? ' active' : ''"><span class="icon">📦</span> Orders</a>
+        <a href="/payment"      class="nav-item" th:classappend="${active == 'payment'}  ? ' active' : ''"><span class="icon">💳</span> Payments</a>
+    </nav>
+    <div class="sidebar-footer">
+        <a href="/user/logout" class="nav-item"><span class="icon">🚪</span> Logout</a>
+    </div>
+</aside>
+</body>
+</html>
