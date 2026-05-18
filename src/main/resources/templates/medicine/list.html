@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Medicines - MediStore</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div th:replace="~{fragments/sidebar :: sidebar('medicine')}"></div>
+<main class="main-content">
+    <div class="page-header">
+        <div><h1>Medicine Management</h1><p>Add, view, edit and delete medicines</p></div>
+        <a href="/medicine/add" class="btn btn-primary">+ Add Medicine</a>
+    </div>
+
+    <div class="stat-grid">
+        <div class="stat-card grad-pink">
+            <p>Total Medicines</p>
+            <h2 th:text="${medicines.size()}">0</h2>
+        </div>
+        <div class="stat-card grad-teal">
+            <p>In Stock</p>
+            <h2 th:text="${inStockCount}">0</h2>
+        </div>
+        <div class="stat-card grad-rose">
+            <p>Out of Stock</p>
+            <h2 th:text="${outOfStockCount}">0</h2>
+        </div>
+    </div>
+
+    <div class="card">
+        <form th:action="@{/medicine}" method="get" class="search-bar">
+            <span>🔍</span>
+            <input type="text" name="search" placeholder="Search medicine..." th:value="${search}">
+            <button type="submit" class="btn btn-primary btn-sm">Search</button>
+        </form>
+        <table class="data-table">
+            <thead>
+                <tr><th>Name</th><th>Price</th><th>Stock</th><th>Expiry</th><th>Type</th><th>Status</th><th>Actions</th></tr>
+            </thead>
+            <tbody>
+                <tr th:each="med : ${medicines}">
+                    <td>
+                        <strong th:text="${med.name}"></strong><br>
+                        <span class="text-muted fs-sm" th:text="${med.description}"></span>
+                    </td>
+                    <td th:text="'Rs. ' + ${med.price}"></td>
+                    <td th:text="${med.stock}"></td>
+                    <td th:text="${med.expiryDate}"></td>
+                    <td><span class="tag" th:text="${med.medicineType}"></span></td>
+                    <td>
+                        <span th:if="${med.stock > 0}" class="badge badge-green">In Stock</span>
+                        <span th:if="${med.stock == 0}" class="badge badge-red">Out of Stock</span>
+                    </td>
+                    <td>
+                        <div class="action-btns">
+                            <a th:href="@{/medicine/edit/{id}(id=${med.medicineId})}" class="btn btn-warning btn-sm">✏️</a>
+                            <form th:action="@{/medicine/delete/{id}(id=${med.medicineId})}" method="post"
+                                  onsubmit="return confirm('Delete this medicine?')">
+                                <button class="btn btn-danger btn-sm">🗑</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(medicines)}">
+                    <td colspan="7">
+                        <div class="empty-state">
+                            <div class="icon">💊</div>
+                            <p>No medicines found.</p>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+</body>
+</html>
