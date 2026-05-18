@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Make Payment - MediStore</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div th:replace="~{fragments/sidebar :: sidebar('payment')}"></div>
+<main class="main-content">
+    <div class="page-header">
+        <div><h1>Make Payment 💳</h1><p>Complete your order payment</p></div>
+        <a href="/order" class="btn btn-secondary">← Back to Orders</a>
+    </div>
+    <div class="card" style="max-width:480px">
+        <div style="background:linear-gradient(135deg,#6366f1,#8b5cf6);border-radius:12px;padding:20px;color:white;margin-bottom:24px;">
+            <p style="opacity:0.85;font-size:0.85rem;">Amount to Pay</p>
+            <h2 style="font-size:2rem;font-weight:700;" th:text="'Rs. ' + ${amount}"></h2>
+            <p style="opacity:0.75;font-size:0.8rem;" th:text="'Order: ' + ${orderId}"></p>
+        </div>
+        <form th:action="@{/payment/add}" method="post">
+            <input type="hidden" name="orderId" th:value="${orderId}">
+            <input type="hidden" name="amount" th:value="${amount}">
+            <div class="form-group">
+                <label class="form-label">Payment Method</label>
+                <select name="method" class="form-control" required>
+                    <option value="cash">💵 Cash</option>
+                    <option value="card">💳 Card</option>
+                    <option value="online">🌐 Online Transfer</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-success w-100 mt-3" style="justify-content:center;padding:12px;">
+                ✅ Confirm Payment
+            </button>
+        </form>
+    </div>
+</main>
+</body>
+</html>
