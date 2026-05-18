@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Suppliers - MediStore</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div th:replace="~{fragments/sidebar :: sidebar('supplier')}"></div>
+<main class="main-content">
+    <div class="page-header">
+        <div><h1>Supplier Management</h1><p>Manage supplier details, medicine types, and quantities</p></div>
+        <a href="/supplier/add" class="btn btn-primary">+ Add Supplier</a>
+    </div>
+    <div class="stat-grid">
+        <div class="stat-card grad-pink"><p>Total Suppliers</p><h2 th:text="${suppliers.size()}">0</h2></div>
+        <div class="stat-card grad-purple"><p>Active Suppliers</p><h2 th:text="${suppliers.size()}">0</h2></div>
+    </div>
+    <div class="card">
+        <table class="data-table">
+            <thead>
+                <tr><th>ID</th><th>Full Name</th><th>Contact Number</th><th>Email</th><th>Address</th><th>Action</th></tr>
+            </thead>
+            <tbody>
+                <tr th:each="sup : ${suppliers}">
+                    <td><span class="badge badge-blue" th:text="${sup.supplierId}"></span></td>
+                    <td><strong style="color:#6366f1;" th:text="${sup.name}"></strong></td>
+                    <td th:text="${sup.phone}"></td>
+                    <td th:text="${sup.email}"></td>
+                    <td th:text="${sup.address}"></td>
+                    <td>
+                        <div class="action-btns">
+                            <a th:href="@{/supplier/edit/{id}(id=${sup.supplierId})}" class="btn-icon" title="Edit">✏️</a>
+                            <form th:action="@{/supplier/delete/{id}(id=${sup.supplierId})}" method="post"
+                                  onsubmit="return confirm('Delete this supplier?')">
+                                <button class="btn-icon" title="Delete">🗑</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(suppliers)}">
+                    <td colspan="6"><div class="empty-state"><div class="icon">🏭</div><p>No suppliers yet.</p></div></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+</body>
+</html>
